@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhon.rain.dao.RainCommentMapper">
+    <resultMap id="BaseResultMap" type="com.jhon.rain.domain.RainComment">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="news_info" jdbcType="INTEGER" property="newsInfo"/>
+        <result column="picture_info" jdbcType="INTEGER" property="pictureInfo"/>
+        <result column="goods_info" jdbcType="INTEGER" property="goodsInfo"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="sort" jdbcType="DECIMAL" property="sort"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+    </resultMap>
+
+    <resultMap id="BaseDTOResultMap" type="com.jhon.rain.common.dto.RainCommentDTO">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="sort" jdbcType="DECIMAL" property="sort"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        id, type, news_info, picture_info, goods_info, created_time, content, sort
+    </sql>
+
+    <sql id="Base_DTO_Column_List">
+        id, type, created_time, content, sort,username
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_comment
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="queryRecordByTypeAndPhotoInfo" resultMap="BaseDTOResultMap">
+        select
+        <include refid="Base_DTO_Column_List"/>
+        from t_comment
+        where type = #{type,jdbcType=INTEGER}
+        and picture_info = #{pictureInfo,jdbcType=INTEGER}
+        order by sort
+    </select>
+
+    <select id="queryRecordByTypeAndNewsInfo" resultMap="BaseDTOResultMap">
+        select
+        <include refid="Base_DTO_Column_List"/>
+        from t_comment
+        where type = #{type,jdbcType=INTEGER}
+        and news_info = #{newsInfo,jdbcType=INTEGER}
+        order by sort
+    </select>
+
+    <select id="queryRecordByTypeAndGoodsInfo" resultMap="BaseDTOResultMap">
+        select
+        <include refid="Base_DTO_Column_List"/>
+        from t_comment
+        where type = #{type,jdbcType=INTEGER}
+        and goods_info = #{goodsInfo,jdbcType=INTEGER}
+        order by sort
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        DELETE FROM t_comment
+        WHERE id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.jhon.rain.domain.RainComment">
+        INSERT INTO t_comment (id, type, news_info,
+                               picture_info, goods_info, created_time,
+                               content, sort)
+        VALUES (#{id,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{newsInfo,jdbcType=INTEGER},
+                #{pictureInfo,jdbcType=INTEGER}, #{goodsInfo,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP},
+                #{content,jdbcType=VARCHAR}, #{sort,jdbcType=DECIMAL})
+    </insert>
+    <insert id="insertSelective" parameterType="com.jhon.rain.domain.RainComment">
+        insert into t_comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="newsInfo != null">
+                news_info,
+            </if>
+            <if test="pictureInfo != null">
+                picture_info,
+            </if>
+            <if test="goodsInfo != null">
+                goods_info,
+            </if>
+            <if test="createdTime != null">
+                created_time,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="sort != null">
+                sort,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="newsInfo != null">
+                #{newsInfo,jdbcType=INTEGER},
+            </if>
+            <if test="pictureInfo != null">
+                #{pictureInfo,jdbcType=INTEGER},
+            </if>
+            <if test="goodsInfo != null">
+                #{goodsInfo,jdbcType=INTEGER},
+            </if>
+            <if test="createdTime != null">
+                #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="sort != null">
+                #{sort,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.jhon.rain.domain.RainComment">
+        update t_comment
+        <set>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="newsInfo != null">
+                news_info = #{newsInfo,jdbcType=INTEGER},
+            </if>
+            <if test="pictureInfo != null">
+                picture_info = #{pictureInfo,jdbcType=INTEGER},
+            </if>
+            <if test="goodsInfo != null">
+                goods_info = #{goodsInfo,jdbcType=INTEGER},
+            </if>
+            <if test="createdTime != null">
+                created_time = #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="sort != null">
+                sort = #{sort,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.jhon.rain.domain.RainComment">
+        UPDATE t_comment
+        SET type         = #{type,jdbcType=INTEGER},
+            news_info    = #{newsInfo,jdbcType=INTEGER},
+            picture_info = #{pictureInfo,jdbcType=INTEGER},
+            goods_info   = #{goodsInfo,jdbcType=INTEGER},
+            created_time = #{createdTime,jdbcType=TIMESTAMP},
+            content      = #{content,jdbcType=VARCHAR},
+            sort         = #{sort,jdbcType=DECIMAL}
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>
